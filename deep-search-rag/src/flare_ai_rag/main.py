@@ -14,7 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pinecone import Pinecone
 
 from flare_ai_rag.ai import GeminiEmbedding, GeminiProvider
-from flare_ai_rag.api import ChatRouter
+from flare_ai_rag.api import ChatRouter, DeepSearchAPI
 from flare_ai_rag.attestation import Vtpm
 from flare_ai_rag.prompts import PromptService
 from flare_ai_rag.responder import GeminiResponder, ResponderConfig
@@ -153,20 +153,29 @@ def create_app() -> FastAPI:
         prompts=prompt_service,
     )
     
+    # Create a Deep Search API
+    deep_search_api = DeepSearchAPI(
+        api_router=api_router,
+        retriever=gemini_retriever,
+        responder=gemini_responder,
+    )
+    logger.info("Deep Search API has been set up.")
+    
     # Create FastAPI App
     app = FastAPI(
         title="Flare AI RAG System",
         description="RAG System for Flare AI hackathon",
     )
+    # Include the API router with the chat and deep-search endpoints
     app.include_router(api_router, prefix="/api/routes/chat")
 
-    # Setup CORS
+    # Setup CORS - ensure all origins are allowed for external API access
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.cors_origins,
+        allow_origins=["*"],  # Allow all origins
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=["*"],  # Allow all methods
+        allow_headers=["*"],  # Allow all headers
     )
 
     # Add health check
