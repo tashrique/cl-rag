@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: deep-search-rag
+    env: docker
+    region: oregon
+    plan: standard
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8001
+      - key: HOST
+        value: 0.0.0.0
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: PINECONE_INDEX_NAME
+        value: deep-search-rag
+    buildCommand: docker build -t deep-search-rag .
+    startCommand: >-
+      docker run -p 8001:8001 
+      -e PORT=${PORT} 
+      -e HOST=${HOST} 
+      -e GEMINI_API_KEY=${GEMINI_API_KEY} 
+      -e PINECONE_API_KEY=${PINECONE_API_KEY} 
+      -e PINECONE_INDEX_NAME=${PINECONE_INDEX_NAME} 
+      deep-search-rag 
