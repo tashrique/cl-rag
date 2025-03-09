@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: fast-search-rag
+    env: docker
+    region: oregon
+    plan: standard
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8002
+      - key: HOST
+        value: 0.0.0.0
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: PINECONE_INDEX_NAME
+        value: fast-search-rag
+    buildCommand: docker build -t fast-search-rag .
+    startCommand: >-
+      docker run -p 8002:8002 
+      -e PORT=${PORT} 
+      -e HOST=${HOST} 
+      -e GEMINI_API_KEY=${GEMINI_API_KEY} 
+      -e PINECONE_API_KEY=${PINECONE_API_KEY} 
+      -e PINECONE_INDEX_NAME=${PINECONE_INDEX_NAME} 
+      fast-search-rag 
