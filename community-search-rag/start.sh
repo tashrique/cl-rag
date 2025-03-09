@@ -1,7 +1,19 @@
 #!/bin/bash
 set -e
 
+# Check for required environment variables
+if [ -z "$GEMINI_API_KEY" ]; then
+  echo "ERROR: GEMINI_API_KEY environment variable is not set"
+  exit 1
+fi
+
+if [ -z "$PINECONE_API_KEY" ]; then
+  echo "ERROR: PINECONE_API_KEY environment variable is not set"
+  exit 1
+fi
+
 echo "Starting Community Search RAG API Server on port $PORT"
+echo "Using Pinecone as vector database"
 
 # Run the application using uvicorn
 if [ "${ENVIRONMENT:-production}" = "development" ]; then

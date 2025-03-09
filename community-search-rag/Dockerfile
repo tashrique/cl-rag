@@ -12,7 +12,9 @@ RUN apt-get update && \
 # Copy project files
 COPY pyproject.toml README.md ./
 COPY src ./src
-COPY .env ./
+
+# Create empty .env file to avoid errors if not provided at runtime
+RUN touch .env
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -e .

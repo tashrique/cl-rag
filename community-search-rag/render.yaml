@@ -17,4 +17,11 @@ services:
       - key: PINECONE_INDEX_NAME
         value: community-search-rag
     buildCommand: docker build -t community-search-rag .
-    startCommand: docker run -p 8004:8004 --env-file .env community-search-rag 
+    startCommand: >-
+      docker run -p 8004:8004 
+      -e PORT=${PORT} 
+      -e HOST=${HOST} 
+      -e GEMINI_API_KEY=${GEMINI_API_KEY} 
+      -e PINECONE_API_KEY=${PINECONE_API_KEY} 
+      -e PINECONE_INDEX_NAME=${PINECONE_INDEX_NAME} 
+      community-search-rag 

@@ -41,6 +41,7 @@ ENV/
 Dockerfile
 
 # Other
+tests/
 data/
 logs/
 **/.DS_Store
