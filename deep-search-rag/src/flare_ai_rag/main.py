@@ -12,6 +12,7 @@ import uvicorn
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pinecone import Pinecone
+import os
 
 from flare_ai_rag.ai import GeminiEmbedding, GeminiProvider
 from flare_ai_rag.api import ChatRouter, DeepSearchAPI
@@ -190,10 +191,16 @@ def create_app() -> FastAPI:
 
 def start() -> None:
     """Start the API server."""
+    # Get port from environment or use default
+    port = int(os.environ.get("PORT", 8001))
+    host = os.environ.get("HOST", "0.0.0.0")
+    
+    logger.info(f"Starting server on {host}:{port}")
+    
     uvicorn.run(
         "flare_ai_rag.main:create_app",
-        host="0.0.0.0",
-        port=8000,
+        host=host,
+        port=port,
         reload=False,
         factory=True,
         log_level="info",

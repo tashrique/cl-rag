@@ -7,8 +7,6 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
-    wget \
-    tar \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
@@ -21,12 +19,6 @@ RUN touch .env
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -e .
-
-# Download and install Qdrant binary
-RUN wget https://github.com/qdrant/qdrant/releases/download/v1.13.4/qdrant-x86_64-unknown-linux-musl.tar.gz && \
-    tar -xzf qdrant-x86_64-unknown-linux-musl.tar.gz && \
-    mv qdrant /usr/local/bin/ && \
-    rm qdrant-x86_64-unknown-linux-musl.tar.gz
 
 # Make entrypoint executable
 COPY entrypoint.sh /app/
