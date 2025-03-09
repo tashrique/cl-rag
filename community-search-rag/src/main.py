@@ -67,7 +67,13 @@ async def startup_event():
         # Set up the components for the API routes
         community_search.set_components(retriever, responder)
         
-        # Include the router
+        # Include the direct endpoint for easier testing
+        app.include_router(
+            community_search.router, 
+            tags=["direct-access"]
+        )
+        
+        # Include the expected path for compatibility with the centralized server
         app.include_router(
             community_search.router, 
             prefix="/api/routes/chat/community-search",
@@ -91,7 +97,8 @@ async def root():
         "message": "Community Search RAG API is running",
         "version": app.version,
         "endpoints": {
-            "query": "/api/routes/chat/community-search/query",
+            "direct_query": "/query",
+            "prefixed_query": "/api/routes/chat/community-search/query",
             "health": "/health"
         }
     }

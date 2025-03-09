@@ -169,7 +169,8 @@ def create_app() -> FastAPI:
         title="Flare AI Community Search RAG System",
         description="Community-based RAG System for Flare AI hackathon",
     )
-    # Include the API router with the community-search endpoints
+    
+    # Include the API router with the correct path
     app.include_router(api_router, prefix="/api/routes/chat/community-search")
 
     # Setup CORS - ensure all origins are allowed for external API access

@@ -38,9 +38,8 @@ class CommunitySearchAPI:
         # Set the component instances for the router to use
         set_components(self.retriever, self.responder)
         
-        # Include the router
+        # Include the router without a prefix
         self._router.include_router(
             router,
-            prefix="/query",
             tags=["community-search"],
         ) 
